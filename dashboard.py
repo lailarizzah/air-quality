@@ -20,6 +20,14 @@ def load_data():
 # Load data
 data = load_data()
 
+# Bersihkan format angka (hapus pemisah ribuan)
+data = data.replace({",": "", ".": ""}, regex=True)
+data = data.apply(pd.to_numeric, errors="coerce")
+
+# Konversi tanggal ke format datetime
+data_filtered.loc[:, "weekday"] = pd.to_datetime(data_filtered[["year", "month", "day"]]).dt.weekday
+data_filtered.loc[:, "weekend"] = data_filtered["weekday"].apply(lambda x: "Weekend" if x >= 5 else "Weekday")
+
 # Cek apakah data berhasil dimuat
 if data.empty:
     print("Gagal memuat dataset. Periksa kembali format file atau URL.")
