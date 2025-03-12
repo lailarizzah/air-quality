@@ -20,6 +20,9 @@ def load_data():
 # Load data
 data = load_data()
 
+year_filter = st.sidebar.selectbox("Pilih Tahun", data["year"].unique())
+month_filter = st.sidebar.selectbox("Pilih Bulan", data["month"].unique())
+
 # Pastikan dataset telah difilter dengan benar
 data_filtered = data[(data["year"] == year_filter) & (data["month"] == month_filter)]
 
