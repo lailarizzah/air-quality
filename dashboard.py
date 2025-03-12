@@ -58,8 +58,9 @@ if data.empty:
     st.error("Gagal memuat dataset. Periksa kembali URL atau format data.")
     st.stop()
 
-st.write("Kolom yang tersedia dalam dataset:", data.columns.tolist())
-
+if st.sidebar.checkbox("Tampilkan kolom dataset"):
+    st.write("Kolom yang tersedia dalam dataset:", data.columns.tolist())
+    
 # Pastikan nama kolom tidak case-sensitive
 data.columns = data.columns.str.lower()
 
@@ -76,7 +77,7 @@ st.title("Dashboard Kualitas Udara - Kota Aotizhongxin")
 
 # Menampilkan dataset
 st.subheader("Data PM₂.₅")
-st.write(data_filtered.head())
+st.write(data_filtered.to_string())  # Menampilkan seluruh data dalam bentuk teks
 
 # Visualisasi PM2.5 berdasarkan weekday vs weekend
 data_filtered["weekday"] = pd.to_datetime(data_filtered[["year", "month", "day"]]).dt.weekday
@@ -89,6 +90,13 @@ sns.boxplot(x="weekend", y="PM2.5", data=data_filtered, ax=ax)
 st.pyplot(fig)
 
 # Korelasi faktor yang mempengaruhi PM2.5
+# Bersihkan format angka dengan benar
+data_filtered = data_filtered.apply(pd.to_numeric, errors="coerce")
+
+# Drop kolom non-numerik sebelum menghitung korelasi
+numeric_columns = data_filtered.select_dtypes(include=["number"]).columns
+correlation = data_filtered[numeric_columns].corr()["PM2.5"].sort_values(ascending=False)
+st.write(correlation)
 st.subheader("Korelasi Faktor terhadap PM₂.₅")
 correlation = data_filtered.corr()["PM2.5"].sort_values(ascending=False)
 st.write(correlation)
