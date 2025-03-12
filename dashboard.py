@@ -3,13 +3,29 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import pandas as pd
+
 # URL dataset
 DATA_URL = "https://raw.githubusercontent.com/lailarizzah/air-quality/refs/heads/main/PRSA_Data_Aotizhongxin.csv"
 
-# Fungsi untuk memuat data
+# Fungsi untuk memuat data dengan penanganan error
 def load_data():
-    df = pd.read_csv(DATA_URL)
-    return df
+    try:
+        df = pd.read_csv(DATA_URL, sep=",", engine="python", on_bad_lines="skip", encoding="utf-8")
+        return df
+    except Exception as e:
+        print(f"Terjadi error saat membaca dataset: {e}")
+        return pd.DataFrame()  # Mengembalikan DataFrame kosong jika terjadi error
+
+# Load data
+data = load_data()
+
+# Cek apakah data berhasil dimuat
+if data.empty:
+    print("Gagal memuat dataset. Periksa kembali format file atau URL.")
+else:
+    print("Dataset berhasil dimuat!")
+
 
 # Load data
 data = load_data()
