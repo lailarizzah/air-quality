@@ -77,7 +77,7 @@ st.title("Dashboard Kualitas Udara - Kota Aotizhongxin")
 
 # Menampilkan dataset
 st.subheader("Data PM₂.₅")
-st.write(data_filtered.to_string())  # Menampilkan seluruh data dalam bentuk teks
+st.dataframe(data_filtered)  # Bisa discroll dan difilter langsung
 
 # Visualisasi PM2.5 berdasarkan weekday vs weekend
 data_filtered["weekday"] = pd.to_datetime(data_filtered[["year", "month", "day"]]).dt.weekday
