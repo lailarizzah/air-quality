@@ -11,7 +11,7 @@ DATA_URL = "https://raw.githubusercontent.com/lailarizzah/air-quality/refs/heads
 # Fungsi untuk memuat data dengan penanganan error
 def load_data():
     try:
-        df = pd.read_csv(DATA_URL, sep=",", engine="python", on_bad_lines="skip", encoding="utf-8")
+        df = pd.read_csv(DATA_URL, sep=";", engine="python", on_bad_lines="skip", encoding="utf-8")
         return df
     except Exception as e:
         print(f"Terjadi error saat membaca dataset: {e}")
