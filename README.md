@@ -42,16 +42,4 @@ streamlit run dashboard.py
 - Matplotlib & Seaborn
 - Streamlit
 
-## Struktur Direktori Proyek
-```
-/
-│── dashboard.py          # Kode utama untuk dashboard Streamlit
-│── README.md             # Dokumentasi proyek
-│── requirements.txt      # Daftar dependensi yang diperlukan
-│── data/                 # Folder untuk menyimpan dataset (jika diperlukan)
-└── images/               # Folder untuk menyimpan gambar hasil visualisasi
-```
-
-## Lisensi
-Proyek ini dirilis di bawah lisensi MIT. Silakan gunakan dan modifikasi sesuai kebutuhan Anda.
 
