@@ -20,6 +20,18 @@ def load_data():
 # Load data
 data = load_data()
 
+# Pastikan dataset telah difilter dengan benar
+data_filtered = data[(data["year"] == year_filter) & (data["month"] == month_filter)]
+
+# Jika dataset kosong, tampilkan error
+if data_filtered.empty:
+    st.error("Data tidak ditemukan! Coba pilih tahun dan bulan lain.")
+    st.stop()
+
+# Konversi format tanggal dengan benar
+data_filtered.loc[:, "weekday"] = pd.to_datetime(data_filtered[["year", "month", "day"]]).dt.weekday
+data_filtered.loc[:, "weekend"] = data_filtered["weekday"].apply(lambda x: "Weekend" if x >= 5 else "Weekday")
+
 # Bersihkan format angka (hapus pemisah ribuan)
 data = data.replace({",": "", ".": ""}, regex=True)
 data = data.apply(pd.to_numeric, errors="coerce")
