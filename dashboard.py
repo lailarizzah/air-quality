@@ -20,10 +20,12 @@ def load_data():
 # Load data
 data = load_data()
 
-year_filter = st.sidebar.selectbox("Pilih Tahun", data["year"].unique())
-month_filter = st.sidebar.selectbox("Pilih Bulan", data["month"].unique())
+# Sidebar untuk filter tahun dan bulan (hanya satu kali)
+st.sidebar.header("Filter Data")
+year_filter = st.sidebar.selectbox("Pilih Tahun", data["year"].unique(), key="year_select")
+month_filter = st.sidebar.selectbox("Pilih Bulan", data["month"].unique(), key="month_select")
 
-# Pastikan dataset telah difilter dengan benar
+# Pastikan dataset telah difilter setelah pemilihan filter
 data_filtered = data[(data["year"] == year_filter) & (data["month"] == month_filter)]
 
 # Jika dataset kosong, tampilkan error
@@ -68,15 +70,6 @@ if "year" not in data.columns:
 if "year" not in data.columns:
     st.error("Kolom 'year' tidak ditemukan dalam dataset!")
     st.stop()
-# Load data
-data = load_data()
-
-# Sidebar untuk filter tahun dan bulan
-st.sidebar.header("Filter Data")
-year_filter = st.sidebar.selectbox("Pilih Tahun", data["year"].unique())
-month_filter = st.sidebar.selectbox("Pilih Bulan", data["month"].unique())
-
-data_filtered = data[(data["year"] == year_filter) & (data["month"] == month_filter)]
 
 # Judul Dashboard
 st.title("Dashboard Kualitas Udara - Kota Aotizhongxin")
