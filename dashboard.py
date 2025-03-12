@@ -1,7 +1,7 @@
-import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.pyplot as plt
+import streamlit as st
 
 import pandas as pd
 
@@ -89,14 +89,24 @@ fig, ax = plt.subplots()
 sns.boxplot(x="weekend", y="PM2.5", data=data_filtered, ax=ax)
 st.pyplot(fig)
 
-# Korelasi faktor yang mempengaruhi PM2.5
+# Korelasi 
+st.subheader("Korelasi Faktor terhadap PM₂.₅")
+
 # Bersihkan format angka dengan benar
 data_filtered = data_filtered.apply(pd.to_numeric, errors="coerce")
 
 # Drop kolom non-numerik sebelum menghitung korelasi
-numeric_columns = data_filtered.select_dtypes(include=["number"]).columns
-correlation = data_filtered[numeric_columns].corr()["PM2.5"].sort_values(ascending=False)
-st.write(correlation)
-st.subheader("Korelasi Faktor terhadap PM₂.₅")
-correlation = data_filtered.corr()["PM2.5"].sort_values(ascending=False)
-st.write(correlation)
+numeric_columns = data_filtered.select_dtypes(include=["number"])
+
+# Hitung korelasi
+correlation = numeric_columns.corr()["PM2.5"].sort_values(ascending=False)
+
+# Tampilkan tabel korelasi
+st.dataframe(correlation)
+
+# Visualisasi korelasi dengan heatmap
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.heatmap(numeric_columns.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, ax=ax)
+
+# Tampilkan heatmap di Streamlit
+st.pyplot(fig)
