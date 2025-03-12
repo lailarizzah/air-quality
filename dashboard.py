@@ -3,8 +3,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import streamlit as st
 
-import pandas as pd
-
 # URL dataset
 DATA_URL = "https://raw.githubusercontent.com/lailarizzah/air-quality/refs/heads/main/PRSA_Data_Aotizhongxin.csv"
 
@@ -75,53 +73,35 @@ if "year" not in data.columns:
 # Judul Dashboard
 st.title("Dashboard Kualitas Udara - Kota Aotizhongxin")
 
-# **1. Filter Data Sesuai Pilihan User**
-tahun = st.sidebar.selectbox("Pilih Tahun", sorted(data["year"].unique()))
-bulan = st.sidebar.selectbox("Pilih Bulan", sorted(data["month"].unique()))
+# Menampilkan dataset
+st.subheader("Data PM₂.₅")
+st.dataframe(data_filtered)  # Bisa discroll dan difilter langsung
 
-# Filter data berdasarkan input user
-data_filtered = data[(data["year"] == tahun) & (data["month"] == bulan)]
+# Visualisasi PM2.5 berdasarkan weekday vs weekend
+data_filtered["weekday"] = pd.to_datetime(data_filtered[["year", "month", "day"]]).dt.weekday
 
-# Pastikan semua angka dikonversi ke format numerik agar tidak error
+data_filtered["weekend"] = data_filtered["weekday"].apply(lambda x: "Weekend" if x >= 5 else "Weekday")
+
+st.subheader("Perbandingan PM₂.₅ Weekday vs Weekend")
+fig, ax = plt.subplots()
+sns.boxplot(x="weekend", y="PM2.5", data=data_filtered, ax=ax)
+st.pyplot(fig)
+
+st.subheader("Korelasi PM₂.₅ dengan Faktor Cuaca")
+
+# Bersihkan format angka dengan benar
 data_filtered = data_filtered.apply(pd.to_numeric, errors="coerce")
 
-# **2. Tampilkan Data yang Difilter**
-st.subheader("Data PM₂.₅")
-st.dataframe(data_filtered)  # Menampilkan seluruh data, bukan hanya 5 baris
-
-# **3. Korelasi Faktor Cuaca dengan PM2.5**
-st.subheader("Korelasi Faktor Cuaca terhadap PM₂.₅")
-
 # Pilih hanya kolom faktor cuaca
-weather_factors = ["TEMP", "PRES", "WSPM", "RAIN"]
-numeric_columns = [col for col in weather_factors if col in data_filtered.columns]
+weather_factors = ["PM2.5", "TEMP", "PRES", "WSPM", "RAIN"]
+data_weather = data_filtered[weather_factors]
 
-# Hitung korelasi hanya dengan faktor cuaca
-correlation = data_filtered[numeric_columns].corrwith(data_filtered["PM2.5"])
-correlation = correlation.sort_values(ascending=False)
+# Hitung korelasi hanya untuk faktor cuaca
+correlation = data_weather.corr()["PM2.5"].sort_values(ascending=False)
 
-# Tampilkan hasil korelasi
-st.write(correlation)
+# Visualisasi korelasi dengan heatmap
+fig, ax = plt.subplots(figsize=(6, 4))
+sns.heatmap(data_weather.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, ax=ax)
 
-# **4. Boxplot PM₂.₅: Weekday vs Weekend**
-st.subheader("Distribusi PM₂.₅: Weekday vs Weekend")
-
-# **Pastikan tidak ada NaN atau hanya satu kategori**
-if "weekend" not in data_filtered.columns:
-    data_filtered["weekend"] = data_filtered["wd"].apply(lambda x: 1 if x in [6, 7] else 0)  # Anggap wd=6,7 sebagai weekend
-
-# **Hapus NaN di weekend dan PM2.5**
-data_filtered = data_filtered.dropna(subset=["weekend", "PM2.5"])
-
-# **Cek apakah masih ada lebih dari satu kategori (weekday & weekend)**
-if data_filtered["weekend"].nunique() > 1:
-    # Plot boxplot
-    fig, ax = plt.subplots(figsize=(6, 4))
-    sns.boxplot(x="weekend", y="PM2.5", data=data_filtered, ax=ax)
-    ax.set_xticklabels(["Weekday", "Weekend"])
-    ax.set_ylabel("Kadar PM₂.₅")
-
-    # Tampilkan plot di Streamlit
-    st.pyplot(fig)
-else:
-    st.warning("Data yang tersedia hanya berisi satu kategori (hanya weekday atau hanya weekend), sehingga boxplot tidak dapat dibuat.")
+# Tampilkan heatmap di Streamlit
+st.pyplot(fig)
