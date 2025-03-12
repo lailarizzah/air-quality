@@ -119,7 +119,7 @@ else:
 # Tampilkan interpretasi di Streamlit
 st.markdown("### Interpretasi Boxplot")
 for text in interpretation:
-    st.write("- " + text
+    st.write("- " + text)
 
 # Korelasi PM 2.5 dengan Faktor Cuaca 
 st.subheader("Korelasi PM₂.₅ dengan Faktor Cuaca")
