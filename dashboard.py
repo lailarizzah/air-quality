@@ -89,24 +89,21 @@ fig, ax = plt.subplots()
 sns.boxplot(x="weekend", y="PM2.5", data=data_filtered, ax=ax)
 st.pyplot(fig)
 
-# Korelasi 
-st.subheader("Korelasi Faktor terhadap PM₂.₅")
+st.subheader("Korelasi PM₂.₅ dengan Faktor Cuaca")
 
 # Bersihkan format angka dengan benar
 data_filtered = data_filtered.apply(pd.to_numeric, errors="coerce")
 
-# Drop kolom non-numerik sebelum menghitung korelasi
-numeric_columns = data_filtered.select_dtypes(include=["number"])
+# Pilih hanya kolom faktor cuaca
+weather_factors = ["PM2.5", "TEMP", "PRES", "WSPM", "RAIN"]
+data_weather = data_filtered[weather_factors]
 
-# Hitung korelasi
-correlation = numeric_columns.corr()["PM2.5"].sort_values(ascending=False)
-
-# Tampilkan tabel korelasi
-st.dataframe(correlation)
+# Hitung korelasi hanya untuk faktor cuaca
+correlation = data_weather.corr()["PM2.5"].sort_values(ascending=False)
 
 # Visualisasi korelasi dengan heatmap
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.heatmap(numeric_columns.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, ax=ax)
+fig, ax = plt.subplots(figsize=(6, 4))
+sns.heatmap(data_weather.corr(), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, ax=ax)
 
 # Tampilkan heatmap di Streamlit
 st.pyplot(fig)
