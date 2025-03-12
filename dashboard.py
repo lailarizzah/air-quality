@@ -26,7 +26,25 @@ if data.empty:
 else:
     print("Dataset berhasil dimuat!")
 
+# Pastikan nama kolom tidak case-sensitive
+data.columns = data.columns.str.lower()
 
+if data.empty:
+    st.error("Gagal memuat dataset. Periksa kembali URL atau format data.")
+    st.stop()
+
+st.write("Kolom yang tersedia dalam dataset:", data.columns.tolist())
+
+# Pastikan nama kolom tidak case-sensitive
+data.columns = data.columns.str.lower()
+
+if "year" not in data.columns:
+    st.error("Kolom 'year' tidak ditemukan dalam dataset!")
+    st.stop()
+
+if "year" not in data.columns:
+    st.error("Kolom 'year' tidak ditemukan dalam dataset!")
+    st.stop()
 # Load data
 data = load_data()
 
