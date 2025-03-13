@@ -56,5 +56,6 @@ submission
 ├───README.md          # Dokumentasi proyek
 └───requirements.txt   # Daftar dependensi yang diperlukan
 └───url.txt
+/
 
 
