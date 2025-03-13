@@ -43,17 +43,17 @@ streamlit run dashboard.py
 - Streamlit
 
 ## Struktur Direktori Proyek
-
-- `/submission`
-  - `dashboard/` → Kode utama untuk dashboard Streamlit
-    - `dashboard.py`
-    - `main_data.csv`
-    - `data/` → Folder untuk menyimpan dataset
-      - `data_1.csv`
-      - `data_2.csv`
-    - `notebook.ipynb`
-    - `README.md` → Dokumentasi proyek
-  - `requirements.txt` → Daftar dependensi yang diperlukan
-  - `url.txt`
-
-
+'''
+/ 
+submission
+├───dashboard       
+| ├───main_data.csv
+| └───dashboard.py
+├───data
+| ├───data_1.csv
+| └───data_2.csv
+├───notebook.ipynb
+├───README.md
+└───requirements.txt
+└───url.txt
+'''
