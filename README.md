@@ -5,7 +5,7 @@ Proyek ini bertujuan untuk menganalisis kualitas udara di kota Aotizhongxin meng
 
 ## Dataset
 Dataset yang digunakan diambil dari:
-[PRSA Data Aotizhongxin](https://raw.githubusercontent.com/lailarizzah/air-quality/refs/heads/main/PRSA_Data_Aotizhongxin.csv)
+[PRSA Data Aotizhongxin](https://raw.githubusercontent.com/lailarizzah/Air-Quality-Dataset/refs/heads/main/data/PRSA_Data_Aotizhongxin.csv)
 
 ### Fitur-Fitur Utama dalam Dataset:
 - `year`, `month`, `day`: Informasi tanggal pencatatan kualitas udara.
@@ -41,5 +41,20 @@ streamlit run dashboard.py
 - Pandas & NumPy
 - Matplotlib & Seaborn
 - Streamlit
+
+## Struktur Direktori Proyek
+
+/
+submission
+├───dashboard          # Kode utama untuk dashboard Streamlit
+| ├───main_data.csv
+| └───dashboard.py
+├───data               # Folder untuk menyimpan dataset
+| ├───data_1.csv
+| └───data_2.csv
+├───notebook.ipynb
+├───README.md          # Dokumentasi proyek
+└───requirements.txt   # Daftar dependensi yang diperlukan
+└───url.txt
 
 
